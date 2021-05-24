@@ -49,6 +49,10 @@ class ConfigService {
       },
     };
   }
+
+  public getJWTSecret(): string {
+    return this.getValue('JWT_SECRET')
+  }
 }
 
 const configService = new ConfigService(process.env);
@@ -59,6 +63,7 @@ configService.ensureValues([
   'POSTGRES_USER',
   'POSTGRES_PASSWORD',
   'POSTGRES_DATABASE',
+  'JWT_SECRET'
 ]);
 
 export { configService };
