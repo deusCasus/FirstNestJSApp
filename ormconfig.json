@@ -1,0 +1,18 @@
+{
+  "type": "postgres",
+  "host": "127.0.0.1",
+  "port": 5432,
+  "username": "alex",
+  "password": "qwerty",
+  "database": "alex",
+  "entities": [
+    "src/entities/*.entity.ts"
+  ],
+  "migrationsTableName": "migration",
+  "migrations": [
+    "src/migration/*.tsn"
+  ],
+  "cli": {
+    "migrationsDir": "src/migration"
+  }
+}
