@@ -1,9 +1,9 @@
 import { BaseEntity } from './base.entity';
-import { TaskList } from './taskList.entity';
+import { TaskListEntity } from './taskList.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'task' })
-export class Task extends BaseEntity {
+export class TaskEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   caption: string;
 
@@ -13,6 +13,6 @@ export class Task extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   isComplite: boolean;
 
-  @ManyToOne(() => TaskList, taskList => taskList.tasks)
-  taskList: TaskList;
+  @ManyToOne(() => TaskListEntity, taskList => taskList.tasks)
+  taskList: TaskListEntity;
 }

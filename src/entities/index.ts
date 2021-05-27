@@ -1,3 +1,3 @@
-export { User } from './user.entity';
-export { TaskList } from './taskList.entity';
-export { Task } from './task.entity';
+export { UserEntity } from './user.entity';
+export { TaskListEntity } from './taskList.entity';
+export { TaskEntity } from './task.entity';
