@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
@@ -8,19 +12,7 @@ import { SignUpUserDto } from './dto';
 import { TokenPair, UserResponse } from './interface';
 
 export interface UserData {
-  id: string;
-  username: string;
-  email: string;
-}
-
-export interface UserData {
-  id: string;
-  username: string;
-  email: string;
-}
-
-export interface UserData {
-  id: string;
+  id: number;
   username: string;
   email: string;
 }
@@ -32,14 +24,16 @@ export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-    private jwtService: JwtService
-  ) {
-  }
+    private jwtService: JwtService,
+  ) {}
 
-  async validateUser(email: string, password: string): Promise<UserData | null> {
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<UserData | null> {
     const lowCaseEmail = email.toLowerCase();
     const user = await this.userRepository.findOne({
-      where: { email: lowCaseEmail }
+      where: { email: lowCaseEmail },
     });
 
     if (!user) return null;
@@ -49,29 +43,29 @@ export class AuthService {
     return {
       id: user.id,
       username: user.username,
-      email: lowCaseEmail
+      email: lowCaseEmail,
     };
   }
 
-  async getUser(userId: string): Promise<UserResponse> {
+  async getUser(userId: number): Promise<UserResponse> {
     const user = await this.userRepository.findOne(userId);
     if (!user) throw new NotFoundException();
     return {
       id: user.id,
       email: user.email,
-      username: user.username
-    }
+      username: user.username,
+    };
   }
 
   async login(user: any): Promise<TokenPair> {
-    const payload = { username: user.username, sub: user.userId };
-    return { accessToken: this.jwtService.sign(payload), };
+    const payload = { username: user.username, sub: user.id };
+    return { accessToken: this.jwtService.sign(payload) };
   }
 
   async registry(user: SignUpUserDto): Promise<UserEntity> {
     const emailInLowerCase = user.email.toLowerCase();
     const searchedUser = await this.userRepository.findOne({
-      where: { email: emailInLowerCase }
+      where: { email: emailInLowerCase },
     });
 
     if (searchedUser) {
@@ -82,7 +76,7 @@ export class AuthService {
     return await this.userRepository.save({
       username: user.username,
       email: emailInLowerCase,
-      password: encryptedPass
+      password: encryptedPass,
     });
   }
 }

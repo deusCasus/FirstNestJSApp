@@ -14,11 +14,10 @@ import { AuthController } from './auth.controller';
     PassportModule,
     JwtModule.register({
       secret: configService.getJWTSecret(),
-      signOptions: { expiresIn: '60s' },
-    })
+    }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
-  exports: [JwtModule]
+  exports: [JwtModule],
 })
 export class AuthModule {}

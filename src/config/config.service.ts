@@ -42,16 +42,16 @@ class ConfigService {
       entities: ['dist/entities/*.entity.js'],
 
       migrationsTableName: 'migration',
-      migrations: ['dist/migration/*.js'],
-
+      migrations: ['./migration/*.js'],
+      logging: true,
       cli: {
-        migrationsDir: 'dist/migration',
+        migrationsDir: 'migration',
       },
     };
   }
 
   public getJWTSecret(): string {
-    return this.getValue('JWT_SECRET')
+    return this.getValue('JWT_SECRET');
   }
 }
 
@@ -63,7 +63,7 @@ configService.ensureValues([
   'POSTGRES_USER',
   'POSTGRES_PASSWORD',
   'POSTGRES_DATABASE',
-  'JWT_SECRET'
+  'JWT_SECRET',
 ]);
 
 export { configService };

@@ -8,9 +8,9 @@ export class TaskListEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   caption: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.taskLists)
-  owner: string;
+  @ManyToOne(() => UserEntity, (user) => user.taskLists, { onDelete: "CASCADE" })
+  owner: UserEntity;
 
-  @OneToMany(() => TaskEntity, (task) => task.taskList)
+  @OneToMany(() => TaskEntity, (task) => task.taskList, { onDelete: "CASCADE" })
   tasks: TaskEntity[];
 }

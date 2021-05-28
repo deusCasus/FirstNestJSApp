@@ -13,6 +13,6 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   password: string;
 
-  @OneToMany(() => TaskListEntity, (taskList) => taskList.owner)
+  @OneToMany(() => TaskListEntity, (taskList) => taskList.owner, { onDelete: "CASCADE" })
   taskLists: TaskListEntity[];
 }

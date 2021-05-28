@@ -1,23 +1,25 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configService } from './config/config.service';
+import { TaskModule } from './modules/task/task.module';
 
 @Module({
-  imports: [AuthModule, TypeOrmModule.forRoot(configService.getTypeOrmConfig())],
-  controllers: [AppController],
+  imports: [
+    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    AuthModule,
+    TaskModule,
+  ],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_PIPE,
       useValue: new ValidationPipe({
         whitelist: true,
-        transform: true
-      })
-    }
+        transform: true,
+      }),
+    },
   ],
 })
 export class AppModule {}
