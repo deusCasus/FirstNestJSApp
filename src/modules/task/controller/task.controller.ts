@@ -76,13 +76,13 @@ export class TaskController {
       taskListId,
       user.userId,
     );
-    console.log('canAccessToTaskList ', canAccessToTaskList);
+
     if (!canAccessToTaskList) throw new NotFoundException();
     const canAccessToTask = await this.taskService.checkAccess(
       taskId,
       user.userId,
     );
-    console.log('canAccessToTask ', canAccessToTask);
+
     if (!canAccessToTask) throw new NotFoundException();
     return this.taskService.updateTask(taskId, editTaskDto);
   }

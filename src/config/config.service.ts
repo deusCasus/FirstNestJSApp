@@ -43,7 +43,7 @@ class ConfigService {
 
       migrationsTableName: 'migration',
       migrations: ['./migration/*.js'],
-      logging: true,
+      logging: !this.isProduction(),
       cli: {
         migrationsDir: 'migration',
       },
