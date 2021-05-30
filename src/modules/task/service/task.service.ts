@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TaskEntity } from '../../../entities';
-import { TaskDto } from '../dto';
+import { CreateTaskDTO, EditTaskDTO, TaskDTO } from '../dto';
 
 @Injectable()
 export class TaskService {
@@ -19,26 +19,50 @@ export class TaskService {
     return task.taskList.owner.id === userId;
   }
 
-  public getListOfTaskByTaskList(taskListId: number): Promise<TaskEntity[]> {
-    return this.taskRepository.find({ where: { taskList: taskListId } });
+  public getListOfTaskByTaskList(taskListId: number): Promise<TaskDTO[]> {
+    return this.taskRepository.find({ where: { taskList: taskListId } })
+      .then((list) => list.map(item => ({
+        id: item.id,
+        caption: item.caption,
+        description: item.description,
+        isComplete: item.isComplete
+      })));
   }
 
-  public createTask(taskListId: number, taskDto: TaskDto): Promise<TaskEntity> {
-    return this.taskRepository.save({
+  public async createTask(taskListId: number, taskDto: CreateTaskDTO): Promise<TaskDTO> {
+    const createdTask = await this.taskRepository.save({
       caption: taskDto.caption,
       description: taskDto.description,
       isComplete: false,
       taskList: { id: taskListId },
     });
+
+    return {
+      id: createdTask.id,
+      caption: createdTask.caption,
+      description: createdTask.description,
+      isComplete: createdTask.isComplete
+    }
   }
 
   public async updateTask(
     taskId: number,
-    taskDto: TaskDto,
-  ): Promise<TaskEntity> {
+    taskDto: EditTaskDTO,
+  ): Promise<TaskDTO> {
     const task = await this.taskRepository.findOne(taskId);
     if (!task) throw new NotFoundException();
-    return this.taskRepository.save(taskDto);
+    task.caption = taskDto.caption;
+    task.description = taskDto.description;
+    task.isComplete = taskDto.isComplete;
+
+    const updatedTask = await this.taskRepository.save(task);
+
+    return {
+      id: updatedTask.id,
+      caption: updatedTask.caption,
+      description: updatedTask.description,
+      isComplete: updatedTask.isComplete
+    }
   }
 
   public async removeTask(taskId: number): Promise<void> {

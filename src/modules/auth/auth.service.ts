@@ -8,14 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from '../../entities';
-import { SignUpUserDto } from './dto';
-import { TokenPair, UserResponse } from './interface';
-
-export interface UserData {
-  id: number;
-  username: string;
-  email: string;
-}
+import { MainUserDataDto, SignUpUserDTO, TokenPairDto } from './dto';
 
 const HASH_ROUNDS = 3;
 
@@ -30,7 +23,7 @@ export class AuthService {
   async validateUser(
     email: string,
     password: string,
-  ): Promise<UserData | null> {
+  ): Promise<MainUserDataDto | null> {
     const lowCaseEmail = email.toLowerCase();
     const user = await this.userRepository.findOne({
       where: { email: lowCaseEmail },
@@ -47,7 +40,7 @@ export class AuthService {
     };
   }
 
-  async getUser(userId: number): Promise<UserResponse> {
+  async getUser(userId: number): Promise<MainUserDataDto> {
     const user = await this.userRepository.findOne(userId);
     if (!user) throw new NotFoundException();
     return {
@@ -57,12 +50,12 @@ export class AuthService {
     };
   }
 
-  async login(user: any): Promise<TokenPair> {
+  async login(user: any): Promise<TokenPairDto> {
     const payload = { username: user.username, sub: user.id };
     return { accessToken: this.jwtService.sign(payload) };
   }
 
-  async registry(user: SignUpUserDto): Promise<UserEntity> {
+  async registry(user: SignUpUserDTO): Promise<UserEntity> {
     const emailInLowerCase = user.email.toLowerCase();
     const searchedUser = await this.userRepository.findOne({
       where: { email: emailInLowerCase },

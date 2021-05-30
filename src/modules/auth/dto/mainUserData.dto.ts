@@ -1,12 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TaskDTO {
+export class MainUserDataDto {
   @ApiProperty()
   id: number;
   @ApiProperty()
-  caption: string;
+  username: string;
   @ApiProperty()
-  description: string;
-  @ApiProperty()
-  isComplete: boolean;
+  email: string;
 }

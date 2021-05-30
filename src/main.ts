@@ -8,6 +8,9 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Alex pet-project backend')
     .setVersion('0.0.1')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

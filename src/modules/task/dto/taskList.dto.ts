@@ -1,6 +1,8 @@
-import { IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class TaskListDto {
-  @IsString()
+export class TaskListDTO {
+  @ApiProperty()
+  id: number;
+  @ApiProperty()
   caption: string;
 }
