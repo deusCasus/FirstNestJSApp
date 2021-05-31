@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard, LocalAuthGuard } from './guards';
 import { AuthService } from './auth.service';
-import { MainUserDataDto, SignInUserDTO, SignUpUserDTO, TokenPairDto } from './dto';
+import { MainUserDataDTO, SignInUserDTO, SignUpUserDTO, TokenPairDTO } from './dto';
 import { User } from '../../infra/decorators';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -17,20 +17,20 @@ import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class AuthController {
   constructor(private service: AuthService) {}
 
-  @ApiResponse({ type: MainUserDataDto, status: 200 })
+  @ApiResponse({ type: MainUserDataDTO, status: 200 })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('/auth')
-  getUserData(@User() user: any): Promise<MainUserDataDto> {
+  getUserData(@User() user: any): Promise<MainUserDataDTO> {
     return this.service.getUser(user.userId);
   }
 
 
   @ApiBody({ type: SignInUserDTO })
-  @ApiResponse({ type: TokenPairDto, status: 200 })
+  @ApiResponse({ type: TokenPairDTO, status: 200 })
   @UseGuards(LocalAuthGuard)
   @Post('auth/signIn')
-  async login(@Request() req: any): Promise<TokenPairDto> {
+  async login(@Request() req: any): Promise<TokenPairDTO> {
     return this.service.login(req.user);
   }
 

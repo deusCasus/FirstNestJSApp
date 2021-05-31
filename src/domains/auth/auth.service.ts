@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from '../../entities';
-import { MainUserDataDto, SignUpUserDTO, TokenPairDto } from './dto';
+import { MainUserDataDTO, SignUpUserDTO, TokenPairDTO } from './dto';
 
 const HASH_ROUNDS = 3;
 
@@ -23,7 +23,7 @@ export class AuthService {
   async validateUser(
     email: string,
     password: string,
-  ): Promise<MainUserDataDto | null> {
+  ): Promise<MainUserDataDTO | null> {
     const lowCaseEmail = email.toLowerCase();
     const user = await this.userRepository.findOne({
       where: { email: lowCaseEmail },
@@ -40,7 +40,7 @@ export class AuthService {
     };
   }
 
-  async getUser(userId: number): Promise<MainUserDataDto> {
+  async getUser(userId: number): Promise<MainUserDataDTO> {
     const user = await this.userRepository.findOne(userId);
     if (!user) throw new NotFoundException();
     return {
@@ -50,7 +50,7 @@ export class AuthService {
     };
   }
 
-  async login(user: any): Promise<TokenPairDto> {
+  async login(user: any): Promise<TokenPairDTO> {
     const payload = { username: user.username, sub: user.id };
     return { accessToken: this.jwtService.sign(payload) };
   }
