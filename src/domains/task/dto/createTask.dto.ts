@@ -2,10 +2,10 @@ import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTaskDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'The caption of the task' })
   @IsString()
   caption: string;
-  @ApiProperty()
+  @ApiProperty({ description: 'The description of the task' })
   @IsString()
   description: string;
 }

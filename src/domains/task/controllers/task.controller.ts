@@ -13,7 +13,7 @@ import { JwtAuthGuard } from '../../auth/guards';
 import { User } from '../../../infra/decorators';
 import { TaskListService, TaskService } from '../services';
 import { CreateTaskDTO, EditTaskDTO, EditTaskListDTO, TaskDTO } from '../dto';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Work with Task')
 @Controller()
@@ -23,8 +23,9 @@ export class TaskController {
     private taskService: TaskService,
   ) {}
 
+  @ApiOperation({ summary: 'Get the task list by task list id' })
   @ApiBearerAuth()
-  @ApiParam({ name: 'taskListId' })
+  @ApiParam({ name: 'taskListId', description: 'ID for the task list' })
   @ApiResponse({ type: TaskDTO, isArray: true, status: 200 })
   @UseGuards(JwtAuthGuard)
   @Get('/task/:taskListId/list')
@@ -40,8 +41,9 @@ export class TaskController {
     return this.taskService.getListOfTaskByTaskList(taskListId);
   }
 
+  @ApiOperation({ summary: 'Create a task' })
   @ApiBearerAuth()
-  @ApiParam({ name: 'taskListId' })
+  @ApiParam({ name: 'taskListId', description: 'ID for the task list' })
   @ApiBody({ type: CreateTaskDTO })
   @ApiResponse({ type: TaskDTO, status: 200 })
   @UseGuards(JwtAuthGuard)
@@ -59,9 +61,10 @@ export class TaskController {
     return this.taskService.createTask(taskListId, createTaskDto);
   }
 
+  @ApiOperation({ summary: 'Update the task' })
   @ApiBearerAuth()
-  @ApiParam({ name: 'taskListId' })
-  @ApiParam({ name: 'taskId' })
+  @ApiParam({ name: 'taskListId', description: 'ID for the task list' })
+  @ApiParam({ name: 'taskId', description: 'ID for the task' })
   @ApiBody({ type: EditTaskListDTO })
   @ApiResponse({ type: TaskDTO, status: 200 })
   @UseGuards(JwtAuthGuard)
@@ -87,10 +90,11 @@ export class TaskController {
     return this.taskService.updateTask(taskId, editTaskDto);
   }
 
+  @ApiOperation({ summary: 'Remove the task by ID' })
   @ApiBearerAuth()
-  @ApiParam({ name: 'taskListId' })
-  @ApiParam({ name: 'taskId' })
-  @ApiResponse({ status: 200 })
+  @ApiParam({ name: 'taskListId', description: 'ID for the task list' })
+  @ApiParam({ name: 'taskId', description: 'ID for the task' })
+  @ApiResponse({ status: 200, description: 'Response hasn\'t body' })
   @UseGuards(JwtAuthGuard)
   @Delete('/task/:taskListId/list/:taskId')
   public async removeTask(
