@@ -6,10 +6,10 @@ import {
   Body,
   Get,
 } from '@nestjs/common';
-import { JwtAuthGuard, LocalAuthGuard } from './guard';
+import { JwtAuthGuard, LocalAuthGuard } from './guards';
 import { AuthService } from './auth.service';
 import { MainUserDataDto, SignInUserDTO, SignUpUserDTO, TokenPairDto } from './dto';
-import { User } from '../../infra/decorator';
+import { User } from '../../infra/decorators';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller()

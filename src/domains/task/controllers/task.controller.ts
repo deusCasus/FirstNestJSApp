@@ -9,9 +9,9 @@ import {
   Delete,
   NotFoundException,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../../auth/guard';
-import { User } from '../../../infra/decorator';
-import { TaskListService, TaskService } from '../service';
+import { JwtAuthGuard } from '../../auth/guards';
+import { User } from '../../../infra/decorators';
+import { TaskListService, TaskService } from '../services';
 import { CreateTaskDTO, EditTaskDTO, EditTaskListDTO, TaskDTO } from '../dto';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 

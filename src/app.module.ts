@@ -1,9 +1,9 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { AuthModule } from './modules/auth/auth.module';
+import { AuthModule } from './domains/auth/auth.module';
 import { APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configService } from './config/config.service';
-import { TaskModule } from './modules/task/task.module';
+import { TaskModule } from './domains/task/task.module';
 
 @Module({
   imports: [
