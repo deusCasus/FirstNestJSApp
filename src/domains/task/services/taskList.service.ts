@@ -20,7 +20,7 @@ export class TaskListService {
     return taskList.owner.id === userId;
   }
 
-  public getListOfTaskListByUser(userId: string): Promise<TaskListDTO[]> {
+  public getListOfTaskListByUser(userId: number): Promise<TaskListDTO[]> {
     return this.taskListRepository.find({ where: { owner: userId } })
       .then(list => list.map(item => ({
         id: item.id,

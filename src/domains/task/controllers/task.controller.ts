@@ -10,7 +10,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../auth/guards';
-import { User } from '../../../infra/decorators';
+import { User, UserData } from '../../../infra/decorators';
 import { TaskListService, TaskService } from '../services';
 import { CreateTaskDTO, EditTaskDTO, EditTaskListDTO, TaskDTO } from '../dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -30,7 +30,7 @@ export class TaskController {
   @UseGuards(JwtAuthGuard)
   @Get('/task/:taskListId/list')
   public async getListOfTaskList(
-    @User() user: any,
+    @User() user: UserData,
     @Param('taskListId') taskListId: number,
   ): Promise<TaskDTO[]> {
     const canAccess = await this.taskListService.checkAccess(
@@ -49,7 +49,7 @@ export class TaskController {
   @UseGuards(JwtAuthGuard)
   @Post('/task/:taskListId/list')
   public async createTask(
-    @User() user: any,
+    @User() user: UserData,
     @Param('taskListId') taskListId: number,
     @Body() createTaskDto: CreateTaskDTO,
   ): Promise<TaskDTO> {
@@ -70,7 +70,7 @@ export class TaskController {
   @UseGuards(JwtAuthGuard)
   @Put('/task/:taskListId/list/:taskId')
   public async updateTask(
-    @User() user: any,
+    @User() user: UserData,
     @Param('taskListId') taskListId: number,
     @Param('taskId') taskId: number,
     @Body() editTaskDto: EditTaskDTO,
@@ -98,7 +98,7 @@ export class TaskController {
   @UseGuards(JwtAuthGuard)
   @Delete('/task/:taskListId/list/:taskId')
   public async removeTask(
-    @User() user: any,
+    @User() user: UserData,
     @Param('taskListId') taskListId: number,
     @Param('taskId') taskId: number,
   ): Promise<void> {
