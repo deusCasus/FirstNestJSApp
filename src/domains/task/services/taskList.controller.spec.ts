@@ -33,7 +33,7 @@ describe('task list service', () => {
     expect(service).toBeDefined();
   });
 
-  it('Success execute checkAccess with correct user', async () => {
+  it('should should success execute checkAccess with correct user', async () => {
     const taskList = createMockTaskListEntity(userEntity);
 
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(taskList);
@@ -41,7 +41,7 @@ describe('task list service', () => {
       .toEqual(true);
   });
 
-  it('Success execute checkAccess with incorrect user', async () => {
+  it('should success execute checkAccess with incorrect user', async () => {
     const taskList = createMockTaskListEntity(userEntity);
     const authorUser = createMockUserEntity(userEntity.id + 1);
 
@@ -50,7 +50,7 @@ describe('task list service', () => {
       .toEqual(false);
   });
 
-  it('Throw error in checkAccess if not find task list by id', async () => {
+  it('should throw error in checkAccess if not find task list by id', async () => {
     const taskList = createMockTaskListEntity(userEntity);
 
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(undefined);
@@ -59,7 +59,7 @@ describe('task list service', () => {
       .toThrowError(new NotFoundException());
   });
 
-  it('Success execute getListOfTaskListByUser', async () => {
+  it('should success execute getListOfTaskListByUser', async () => {
     const listOfTaskList = new Array(10).fill(null)
       .map((_, i) => createMockTaskListEntity(userEntity, i));
 
@@ -74,7 +74,7 @@ describe('task list service', () => {
       .toEqual(listOfTaskListDTO);
   });
 
-  it('Success execute createTaskList', async () => {
+  it('should success execute createTaskList', async () => {
     const taskList = createMockTaskListEntity(userEntity);
     const taskListDTO: TaskListDTO = { id: taskList.id, caption: taskList.caption };
     const createTaskListDTO: CreateTaskListDTO = {
@@ -87,7 +87,7 @@ describe('task list service', () => {
       .toEqual(taskListDTO);
   });
 
-  it('Success execute updateTaskList', async () => {
+  it('should success execute updateTaskList', async () => {
     const taskList = createMockTaskListEntity(userEntity);
     const editTaskListDTO: EditTaskListDTO = {
       caption: faker.lorem.words(2)
@@ -110,7 +110,7 @@ describe('task list service', () => {
       .toEqual(resTaskListDTO);
   });
 
-  it('Throw error in updateTaskList if not find task list by id', async () => {
+  it('should throw error in updateTaskList if not find task list by id', async () => {
     const taskList = createMockTaskListEntity(userEntity);
     const editTaskListDTO: EditTaskListDTO = {
       caption: faker.lorem.words(2)
@@ -123,7 +123,7 @@ describe('task list service', () => {
       .toThrow(NotFoundException)
   })
 
-  it('Success execute removeTaskList', async () => {
+  it('should success execute removeTaskList', async () => {
     const taskList = createMockTaskListEntity(userEntity);
 
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(taskList);
@@ -133,7 +133,7 @@ describe('task list service', () => {
       .toEqual(undefined)
   })
 
-  it('Throw error in removeTaskList if not find task list by id', async () => {
+  it('should throw error in removeTaskList if not find task list by id', async () => {
     const taskList = createMockTaskListEntity(userEntity);
 
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(undefined);
