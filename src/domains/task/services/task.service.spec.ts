@@ -16,7 +16,7 @@ describe('task service', () => {
   let taskRepo: Repository<TaskEntity>;
   let userEntity: UserEntity;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TaskService,

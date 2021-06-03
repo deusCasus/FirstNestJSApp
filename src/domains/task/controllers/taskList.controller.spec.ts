@@ -18,7 +18,7 @@ describe('TaskList service', () => {
   let userEntity: UserEntity;
   let userData: UserData;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [TaskListController],
       providers: [

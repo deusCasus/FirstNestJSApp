@@ -23,7 +23,7 @@ describe('Task service', () => {
   let parentTaskListEntity: TaskListEntity;
   let parentTaskListDTO: TaskListDTO;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       controllers: [TaskController],
       providers: [

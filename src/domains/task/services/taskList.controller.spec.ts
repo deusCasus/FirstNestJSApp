@@ -13,7 +13,7 @@ describe('task list service', () => {
   let repo: Repository<TaskListEntity>;
   let userEntity: UserEntity;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         TaskListService,
