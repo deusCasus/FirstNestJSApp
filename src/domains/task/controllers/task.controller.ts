@@ -12,7 +12,7 @@ import {
 import { JwtAuthGuard } from '../../auth/guards';
 import { User, UserData } from '../../../infra/decorators';
 import { TaskListService, TaskService } from '../services';
-import { CreateTaskDTO, EditTaskDTO, EditTaskListDTO, TaskDTO } from '../dto';
+import { CreateTaskDTO, EditTaskDTO, TaskDTO } from '../dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Work with Task')
@@ -65,7 +65,7 @@ export class TaskController {
   @ApiBearerAuth()
   @ApiParam({ name: 'taskListId', description: 'ID for the task list' })
   @ApiParam({ name: 'taskId', description: 'ID for the task' })
-  @ApiBody({ type: EditTaskListDTO })
+  @ApiBody({ type: EditTaskDTO })
   @ApiResponse({ type: TaskDTO, status: 200 })
   @UseGuards(JwtAuthGuard)
   @Put('/task/:taskListId/list/:taskId')
