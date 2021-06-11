@@ -21,8 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "pretypeorm": "([ -f file ] && rm file || true) && ts-node -r tsconfig-paths/register src/scripts/write-type-orm-config.ts",
     "typeorm:cli": "yarn run pretypeorm && ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "typeorm:migration:generate": "yarn run build && yarn run typeorm:cli migration:generate -n",
-    "typeorm:migration:run": "tsc ./migration/*.ts && yarn run typeorm:cli migration:run && rimraf ./migration/*.js"
+    "migration:generate": "yarn run build && yarn run typeorm:cli migration:generate -n",
+    "migrate": "tsc ./migration/*.ts && yarn run typeorm:cli migration:run && rimraf ./migration/*.js"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.15",
