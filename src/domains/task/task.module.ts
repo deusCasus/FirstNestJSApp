@@ -6,10 +6,7 @@ import { TaskListService, TaskService } from './services';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([TaskListEntity, TaskEntity]),
-    AuthModule
-  ],
+  imports: [TypeOrmModule.forFeature([TaskListEntity, TaskEntity]), AuthModule],
   providers: [TaskListService, TaskService],
   controllers: [TaskListController, TaskController],
 })

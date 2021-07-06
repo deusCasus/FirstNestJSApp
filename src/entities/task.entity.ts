@@ -1,6 +1,6 @@
 import { BaseEntity } from './base.entity';
 import { TaskListEntity } from './taskList.entity';
-import { Column, Entity, ManyToOne  } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'task' })
 export class TaskEntity extends BaseEntity {
@@ -13,6 +13,8 @@ export class TaskEntity extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   isComplete: boolean;
 
-  @ManyToOne(() => TaskListEntity, (taskList) => taskList.tasks, { onDelete: "CASCADE" })
+  @ManyToOne(() => TaskListEntity, (taskList) => taskList.tasks, {
+    onDelete: 'CASCADE',
+  })
   taskList: TaskListEntity;
 }

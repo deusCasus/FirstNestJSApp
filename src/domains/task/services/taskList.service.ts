@@ -13,19 +13,23 @@ export class TaskListService {
 
   public async checkAccess(taskId: number, userId: number): Promise<boolean> {
     const taskList = await this.taskListRepository.findOne(taskId, {
-      relations: ['owner']
+      relations: ['owner'],
     });
 
     if (!taskList) throw new NotFoundException();
     return taskList.owner.id === userId;
   }
 
-  public getListOfTaskListByUser(userId: number): Promise<TaskListDTO[]> {
-    return this.taskListRepository.find({ where: { owner: userId } })
-      .then(list => list.map(item => ({
-        id: item.id,
-        caption: item.caption
-      })));
+  public async getListOfTaskListByUser(userId: number): Promise<TaskListDTO[]> {
+    const listOfTaskList = await this.taskListRepository.find({
+      where: { owner: userId },
+      order: { created_at: 'ASC' },
+    });
+
+    return listOfTaskList.map((item) => ({
+      id: item.id,
+      caption: item.caption,
+    }));
   }
 
   public async createTaskList(
@@ -37,10 +41,10 @@ export class TaskListService {
       owner: { id: userId },
     });
 
-    return  {
+    return {
       id: createdTaskList.id,
-      caption: createdTaskList.caption
-    }
+      caption: createdTaskList.caption,
+    };
   }
 
   public async updateTaskList(
@@ -54,8 +58,8 @@ export class TaskListService {
 
     return {
       id: updatedTaskList.id,
-      caption: updatedTaskList.caption
-    }
+      caption: updatedTaskList.caption,
+    };
   }
 
   public async removeTaskList(taskId: number): Promise<void> {

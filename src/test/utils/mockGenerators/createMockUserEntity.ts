@@ -11,6 +11,6 @@ export const createMockUserEntity = (id?: number): UserEntity => {
     taskLists: [],
     created_at: date,
     updated_at: date,
-    isArchived: false
-  }
-}
+    isArchived: false,
+  };
+};

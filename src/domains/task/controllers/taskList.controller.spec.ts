@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { TaskListEntity, UserEntity } from '../../../entities';
 import {
   createMockTaskListEntity,
-  createMockUserEntity
+  createMockUserEntity,
 } from '../../../test/utils/mockGenerators';
 import { NotFoundException } from '@nestjs/common';
 import { CreateTaskListDTO, EditTaskListDTO, TaskListDTO } from '../dto';
@@ -42,70 +42,106 @@ describe('TaskList service', () => {
   });
 
   it('should success execute getListOfTaskListByUser', async () => {
-    const taskList: TaskListDTO[] = new Array(10).fill(null)
+    const taskList: TaskListDTO[] = new Array(10)
+      .fill(null)
       .map((_, i) => createMockTaskListEntity(userEntity, i))
-      .map(item => ({ id: item.id, caption: item.caption }));
+      .map((item) => ({ id: item.id, caption: item.caption }));
 
-    jest.spyOn(taskListService, 'getListOfTaskListByUser').mockResolvedValueOnce(taskList);
+    jest
+      .spyOn(taskListService, 'getListOfTaskListByUser')
+      .mockResolvedValueOnce(taskList);
 
-    expect(await taskListController.getListOfTaskList(userData))
-      .toEqual(taskList)
+    expect(await taskListController.getListOfTaskList(userData)).toEqual(
+      taskList,
+    );
   });
 
   it('should success execute createTaskList', async () => {
     const taskListEntity: TaskListEntity = createMockTaskListEntity(userEntity);
-    const taskListDTO: TaskListDTO = { id: taskListEntity.id, caption: taskListEntity.caption };
-    const createTaskListDTO: CreateTaskListDTO = { caption: taskListDTO.caption };
+    const taskListDTO: TaskListDTO = {
+      id: taskListEntity.id,
+      caption: taskListEntity.caption,
+    };
+    const createTaskListDTO: CreateTaskListDTO = {
+      caption: taskListDTO.caption,
+    };
 
-    jest.spyOn(taskListService, 'createTaskList').mockResolvedValueOnce(taskListDTO);
+    jest
+      .spyOn(taskListService, 'createTaskList')
+      .mockResolvedValueOnce(taskListDTO);
 
-    expect(await taskListController.createTaskList(userData, createTaskListDTO))
-      .toEqual(taskListDTO)
+    expect(
+      await taskListController.createTaskList(userData, createTaskListDTO),
+    ).toEqual(taskListDTO);
   });
 
   it('should success execute updateTaskList', async () => {
     const taskListEntity: TaskListEntity = createMockTaskListEntity(userEntity);
-    const taskListDTO: TaskListDTO = { id: taskListEntity.id, caption: taskListEntity.caption };
+    const taskListDTO: TaskListDTO = {
+      id: taskListEntity.id,
+      caption: taskListEntity.caption,
+    };
     const editTaskListDTO: EditTaskListDTO = { caption: taskListDTO.caption };
 
     jest.spyOn(taskListService, 'checkAccess').mockResolvedValueOnce(true);
-    jest.spyOn(taskListService, 'updateTaskList').mockResolvedValueOnce(taskListDTO);
+    jest
+      .spyOn(taskListService, 'updateTaskList')
+      .mockResolvedValueOnce(taskListDTO);
 
-    expect(await taskListController.updateTaskList(userData, taskListDTO.id, editTaskListDTO))
-      .toEqual(taskListDTO)
+    expect(
+      await taskListController.updateTaskList(
+        userData,
+        taskListDTO.id,
+        editTaskListDTO,
+      ),
+    ).toEqual(taskListDTO);
   });
 
   it('should throw error in updateTaskList if find task with another owner', async () => {
     const taskListEntity: TaskListEntity = createMockTaskListEntity(userEntity);
-    const taskListDTO: TaskListDTO = { id: taskListEntity.id, caption: taskListEntity.caption };
+    const taskListDTO: TaskListDTO = {
+      id: taskListEntity.id,
+      caption: taskListEntity.caption,
+    };
     const editTaskListDTO: EditTaskListDTO = { caption: taskListDTO.caption };
 
     jest.spyOn(taskListService, 'checkAccess').mockResolvedValueOnce(false);
-    jest.spyOn(taskListService, 'updateTaskList').mockResolvedValueOnce(taskListDTO);
+    jest
+      .spyOn(taskListService, 'updateTaskList')
+      .mockResolvedValueOnce(taskListDTO);
 
-    await expect(taskListController.updateTaskList(userData, taskListDTO.id, editTaskListDTO))
-      .rejects
-      .toThrowError(new NotFoundException())
+    await expect(
+      taskListController.updateTaskList(
+        userData,
+        taskListDTO.id,
+        editTaskListDTO,
+      ),
+    ).rejects.toThrowError(new NotFoundException());
   });
 
   it('should success execute removeTaskList', async () => {
     const taskListEntity: TaskListEntity = createMockTaskListEntity(userEntity);
 
     jest.spyOn(taskListService, 'checkAccess').mockResolvedValueOnce(true);
-    jest.spyOn(taskListService, 'removeTaskList').mockResolvedValueOnce(undefined);
+    jest
+      .spyOn(taskListService, 'removeTaskList')
+      .mockResolvedValueOnce(undefined);
 
-    expect(await taskListController.removeTaskList(userData, taskListEntity.id))
-      .toEqual(undefined)
+    expect(
+      await taskListController.removeTaskList(userData, taskListEntity.id),
+    ).toEqual(undefined);
   });
 
   it('should throw error in removeTaskList if find task with another owner', async () => {
     const taskListEntity: TaskListEntity = createMockTaskListEntity(userEntity);
 
     jest.spyOn(taskListService, 'checkAccess').mockResolvedValueOnce(false);
-    jest.spyOn(taskListService, 'removeTaskList').mockResolvedValueOnce(undefined);
+    jest
+      .spyOn(taskListService, 'removeTaskList')
+      .mockResolvedValueOnce(undefined);
 
-    await expect(taskListController.removeTaskList(userData, taskListEntity.id))
-      .rejects
-      .toThrowError(new NotFoundException())
+    await expect(
+      taskListController.removeTaskList(userData, taskListEntity.id),
+    ).rejects.toThrowError(new NotFoundException());
   });
 });

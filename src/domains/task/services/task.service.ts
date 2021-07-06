@@ -13,23 +13,30 @@ export class TaskService {
 
   public async checkAccess(taskId: number, userId: number) {
     const task = await this.taskRepository.findOne(taskId, {
-      relations: ['taskList', 'taskList.owner']
+      relations: ['taskList', 'taskList.owner'],
     });
     if (!task) throw new NotFoundException();
     return task.taskList.owner.id === userId;
   }
 
-  public getListOfTaskByTaskList(taskListId: number): Promise<TaskDTO[]> {
-    return this.taskRepository.find({ where: { taskList: taskListId } })
-      .then((list) => list.map(item => ({
-        id: item.id,
-        caption: item.caption,
-        description: item.description,
-        isComplete: item.isComplete
-      })));
+  public async getListOfTaskByTaskList(taskListId: number): Promise<TaskDTO[]> {
+    const listOfTask = await this.taskRepository.find({
+      where: { taskList: taskListId },
+      order: { created_at: 'ASC' },
+    });
+
+    return listOfTask.map((item) => ({
+      id: item.id,
+      caption: item.caption,
+      description: item.description,
+      isComplete: item.isComplete,
+    }));
   }
 
-  public async createTask(taskListId: number, taskDto: CreateTaskDTO): Promise<TaskDTO> {
+  public async createTask(
+    taskListId: number,
+    taskDto: CreateTaskDTO,
+  ): Promise<TaskDTO> {
     const createdTask = await this.taskRepository.save({
       caption: taskDto.caption,
       description: taskDto.description,
@@ -41,8 +48,8 @@ export class TaskService {
       id: createdTask.id,
       caption: createdTask.caption,
       description: createdTask.description,
-      isComplete: createdTask.isComplete
-    }
+      isComplete: createdTask.isComplete,
+    };
   }
 
   public async updateTask(
@@ -61,8 +68,8 @@ export class TaskService {
       id: updatedTask.id,
       caption: updatedTask.caption,
       description: updatedTask.description,
-      isComplete: updatedTask.isComplete
-    }
+      isComplete: updatedTask.isComplete,
+    };
   }
 
   public async removeTask(taskId: number): Promise<void> {

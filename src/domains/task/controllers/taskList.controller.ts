@@ -13,7 +13,14 @@ import { JwtAuthGuard } from '../../auth/guards';
 import { User, UserData } from '../../../infra/decorators';
 import { TaskListService } from '../services';
 import { CreateTaskListDTO, EditTaskListDTO, TaskListDTO } from '../dto';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('Work with TaskList')
 @Controller()
@@ -61,7 +68,7 @@ export class TaskListController {
 
   @ApiOperation({ summary: 'Remove the task list by ID' })
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: 'Response hasn\'t body' })
+  @ApiResponse({ status: 200, description: "Response hasn't body" })
   @ApiParam({ name: 'taskListId', description: 'ID for the task list' })
   @UseGuards(JwtAuthGuard)
   @Delete('/task/:taskListId')
