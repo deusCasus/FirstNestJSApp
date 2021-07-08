@@ -1,17 +1,25 @@
-import { TaskEntity, TaskListEntity } from '../../../entities';
+import { TaskCommentEntity, TaskEntity, TaskListEntity } from '../../../entities';
 import * as faker from 'faker';
 import { createMockTaskListEntity } from './createMockTaskListEntity';
 
-export const createMockTaskEntity = (
+export interface CreateMockTaskEntityArg {
   taskList?: TaskListEntity,
+  comments?: TaskCommentEntity[],
   id?: number,
-): TaskEntity => ({
-  id: id || faker.datatype.number(),
-  caption: faker.lorem.words(2),
-  description: faker.lorem.paragraphs(1),
-  isComplete: false,
-  taskList: taskList || createMockTaskListEntity(),
-  created_at: faker.date.past(),
-  updated_at: faker.date.past(),
-  isArchived: false,
+}
+
+export const createMockTaskEntity = ({
+  id = faker.datatype.number(),
+  taskList = createMockTaskListEntity({}),
+  comments = [],
+}: CreateMockTaskEntityArg): TaskEntity => ({
+    id,
+    caption: faker.lorem.words(2),
+    description: faker.lorem.paragraphs(1),
+    isComplete: false,
+    taskList,
+    created_at: faker.date.past(),
+    updated_at: faker.date.past(),
+    comments,
+    isArchived: false,
 });

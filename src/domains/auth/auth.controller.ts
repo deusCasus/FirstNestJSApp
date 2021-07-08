@@ -48,8 +48,9 @@ export class AuthController {
     description:
       'Status will be send, in the case, where email or password is incorrect',
   })
-  @UseGuards(LocalAuthGuard)
+
   @Post('auth/signIn')
+  @UseGuards(LocalAuthGuard)
   async login(@Request() req: any): Promise<TokenPairDTO> {
     return this.service.login(req.user);
   }
@@ -62,6 +63,7 @@ export class AuthController {
     description:
       'Status will be send, in the case, where email already exist in the system',
   })
+
   @Post('auth/signUp')
   async registry(@Body() signUpUser: SignUpUserDTO): Promise<void> {
     await this.service.registry(signUpUser);

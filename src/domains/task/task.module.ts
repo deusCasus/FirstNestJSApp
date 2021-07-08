@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TaskEntity, TaskListEntity } from '../../entities';
-import { TaskController, TaskListController } from './controllers';
-import { TaskListService, TaskService } from './services';
+import { TaskCommentEntity, TaskEntity, TaskListEntity } from '../../entities';
+import { TaskCommentController, TaskController, TaskListController } from './controllers';
+import { TaskCommentService, TaskListService, TaskService } from './services';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([TaskListEntity, TaskEntity]), AuthModule],
-  providers: [TaskListService, TaskService],
-  controllers: [TaskListController, TaskController],
+  imports: [
+    TypeOrmModule.forFeature([TaskListEntity, TaskEntity, TaskCommentEntity]),
+    AuthModule
+  ],
+  providers: [TaskListService, TaskService, TaskCommentService],
+  controllers: [TaskListController, TaskController, TaskCommentController],
 })
 export class TaskModule {}

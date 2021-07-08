@@ -44,7 +44,10 @@ describe('TaskList service', () => {
   it('should success execute getListOfTaskListByUser', async () => {
     const taskList: TaskListDTO[] = new Array(10)
       .fill(null)
-      .map((_, i) => createMockTaskListEntity(userEntity, i))
+      .map((_, i) => createMockTaskListEntity({
+        owner: userEntity,
+        id: i
+      }))
       .map((item) => ({ id: item.id, caption: item.caption }));
 
     jest

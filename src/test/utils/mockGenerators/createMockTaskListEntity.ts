@@ -1,16 +1,23 @@
-import { TaskListEntity, UserEntity } from '../../../entities';
+import { TaskEntity, TaskListEntity, UserEntity } from '../../../entities';
 import * as faker from 'faker';
 import { createMockUserEntity } from './createMockUserEntity';
 
-export const createMockTaskListEntity = (
-  user?: UserEntity,
+export interface CreateMockTaskListEntityArg {
+  tasks?: TaskEntity[],
+  owner?: UserEntity,
   id?: number,
-): TaskListEntity => ({
-  id: id || faker.datatype.number(),
+}
+
+export const createMockTaskListEntity = ({
+  id = faker.datatype.number(),
+  owner = createMockUserEntity(),
+  tasks = []
+}: CreateMockTaskListEntityArg): TaskListEntity => ({
+  id,
   caption: faker.lorem.words(2),
-  owner: user || createMockUserEntity(),
+  owner,
   created_at: faker.date.past(),
   updated_at: faker.date.past(),
   isArchived: false,
-  tasks: [],
+  tasks,
 });

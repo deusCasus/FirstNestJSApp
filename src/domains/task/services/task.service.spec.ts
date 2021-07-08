@@ -39,8 +39,8 @@ describe('task service', () => {
   });
 
   it('should success execute checkAccess with correct task', async () => {
-    const taskList = createMockTaskListEntity(userEntity);
-    const task = createMockTaskEntity(taskList);
+    const taskList = createMockTaskListEntity({ owner: userEntity });
+    const task = createMockTaskEntity({ taskList });
 
     jest.spyOn(taskRepo, 'findOne').mockResolvedValueOnce(task);
 
@@ -70,7 +70,7 @@ describe('task service', () => {
   });
 
   it('should success execute getListOfTaskByTaskList', async () => {
-    const taskList = createMockTaskListEntity();
+    const taskList = createMockTaskListEntity({});
     const listOfTask = new Array(10)
       .fill(null)
       .map(() => createMockTaskEntity(taskList));
@@ -90,7 +90,7 @@ describe('task service', () => {
   });
 
   it('should success execute createTask', async () => {
-    const task = createMockTaskEntity();
+    const task = createMockTaskEntity({});
 
     const createTaskDTO: CreateTaskDTO = {
       caption: task.caption,
@@ -112,7 +112,7 @@ describe('task service', () => {
   });
 
   it('should success execute updateTask', async () => {
-    const task = createMockTaskEntity();
+    const task = createMockTaskEntity({});
 
     const editTaskDTO: EditTaskDTO = {
       caption: task.caption,
@@ -141,7 +141,7 @@ describe('task service', () => {
   });
 
   it('should throw error in updateTask if not fount task by id', async () => {
-    const task = createMockTaskEntity();
+    const task = createMockTaskEntity({});
     const editTaskDTO: EditTaskDTO = {
       caption: task.caption,
       description: task.description,
@@ -156,7 +156,7 @@ describe('task service', () => {
   });
 
   it('should success execute removeTask', async () => {
-    const task = createMockTaskEntity();
+    const task = createMockTaskEntity({});
 
     jest.spyOn(taskRepo, 'findOne').mockResolvedValueOnce(task);
     jest.spyOn(taskRepo, 'remove').mockResolvedValueOnce(undefined);
@@ -165,9 +165,10 @@ describe('task service', () => {
   });
 
   it('should throw error in removeTask if not fount task by id', async () => {
-    const task = createMockTaskEntity();
+    const task = createMockTaskEntity({});
 
     jest.spyOn(taskRepo, 'findOne').mockResolvedValueOnce(undefined);
+    jest.spyOn(taskRepo, 'remove').mockResolvedValueOnce(undefined);
 
     await expect(service.removeTask(task.taskList.id + 1)).rejects.toThrowError(
       new NotFoundException(),

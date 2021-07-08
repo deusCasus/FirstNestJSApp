@@ -61,7 +61,10 @@ describe('Task service', () => {
   it('should success execute getListOfTaskListByUser', async () => {
     const taskList: TaskDTO[] = new Array(10)
       .fill(null)
-      .map((_, i) => createMockTaskEntity(parentTaskListEntity, i))
+      .map((_, i) => createMockTaskEntity({
+        taskList: parentTaskListEntity,
+        id: i
+      }))
       .map((item) => ({
         id: item.id,
         caption: item.caption,

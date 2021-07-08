@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { TaskListEntity } from './taskList.entity';
+import { TaskCommentEntity } from './taskComment.entity';
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {
@@ -17,4 +18,11 @@ export class UserEntity extends BaseEntity {
     onDelete: 'CASCADE',
   })
   taskLists: TaskListEntity[];
+
+  @OneToMany(
+    () => TaskCommentEntity ,
+    (taskComment) => taskComment.creator,
+    { onDelete: 'CASCADE' }
+  )
+  taskComments: TaskCommentEntity[];
 }

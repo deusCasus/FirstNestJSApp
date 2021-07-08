@@ -38,15 +38,15 @@ describe('task list service', () => {
     expect(service).toBeDefined();
   });
 
-  it('should should success execute checkAccess with correct user', async () => {
-    const taskList = createMockTaskListEntity(userEntity);
+  it('should success execute checkAccess with correct user', async () => {
+    const taskList = createMockTaskListEntity({ owner: userEntity });
 
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(taskList);
     expect(await service.checkAccess(taskList.id, userEntity.id)).toEqual(true);
   });
 
   it('should success execute checkAccess with incorrect user', async () => {
-    const taskList = createMockTaskListEntity(userEntity);
+    const taskList = createMockTaskListEntity({ owner: userEntity });
     const authorUser = createMockUserEntity(userEntity.id + 1);
 
     jest.spyOn(repo, 'findOne').mockResolvedValueOnce(taskList);
@@ -67,7 +67,10 @@ describe('task list service', () => {
   it('should success execute getListOfTaskListByUser', async () => {
     const listOfTaskList = new Array(10)
       .fill(null)
-      .map((_, i) => createMockTaskListEntity(userEntity, i));
+      .map((_, i) => createMockTaskListEntity({
+        owner: userEntity,
+        id: i
+      }));
 
     const listOfTaskListDTO = listOfTaskList.map<TaskListDTO>((item) => ({
       id: item.id,
